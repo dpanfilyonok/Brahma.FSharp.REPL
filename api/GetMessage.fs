@@ -36,8 +36,7 @@ module GetMessage =
             use stream = new StreamReader(req.Body)
             let! reqBody = stream.ReadToEndAsync() |> Async.AwaitTask
 
-            let data =
-                JsonConvert.DeserializeObject<NameContainer>(reqBody)
+            let data = JsonConvert.DeserializeObject<NameContainer>(reqBody)
 
             let name =
                 match nameOpt with
@@ -48,12 +47,11 @@ module GetMessage =
                     | nc -> nc.Name
 
             let responseMessage =
-                if (String.IsNullOrWhiteSpace(name)) then
-                    "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+                if String.IsNullOrWhiteSpace(name) then
+                    "This HTTP triggered function executed successfully. \
+                    Pass a name in the query string or in the request body for a personalized response."
                 else
-                    "Hello, "
-                    + name
-                    + ". This HTTP triggered function executed successfully."
+                    $"Hello, {name}. This HTTP triggered function executed successfully."
 
             return OkObjectResult(responseMessage) :> IActionResult
         }

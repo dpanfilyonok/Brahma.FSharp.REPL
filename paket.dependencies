@@ -9,12 +9,8 @@ nuget Feliz
     nuget Thoth.Fetch
 
 group Api
-    framework: netcoreapp3.1,netstandard2.0
+    framework: net6.0
     source https://api.nuget.org/v3/index.json
 
     nuget FSharp.Core
     nuget Microsoft.NET.Sdk.Functions
-
-    # avoid getting a .NET 5 version through transient deps
-    nuget Microsoft.Extensions.Logging.Abstractions 3.1.16
-    nuget Microsoft.Extensions.Primitives 3.1.16
