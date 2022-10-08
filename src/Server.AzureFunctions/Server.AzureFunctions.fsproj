@@ -16,6 +16,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetMessage.fs" />
+    <Compile Include="TranslateFunction.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.fsproj" />
   </ItemGroup>
 </Project>

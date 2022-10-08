@@ -1,12 +1,12 @@
 module App
 
 open Browser.Dom
-open Fetch
+//open Fetch
 open Thoth.Fetch
 open Feliz
 
 [<ReactComponent>]
-let Counter () =
+let Counter() =
     let count, setCount = React.useState 0
 
     Html.div [
@@ -19,26 +19,32 @@ let Counter () =
     ]
 
 [<ReactComponent>]
-let Message () =
+let Message() =
     let message, setMessage = React.useState ""
+
+    let code = """
+module Command
+open Brahma.FSharp
+
+let command =
+    <@
+        fun (range: Range1D) (buf: ClArray<int>) ->
+            buf.[0] <- 1
+    @>
+"""
 
     Html.div [
         Html.button [
             prop.text "Get a message from the API"
             prop.onClick <| fun _ ->
                 promise {
-                    let! message =
-                        Fetch.get (
-                            "/api/GetMessage?name=FSharp",
-                            headers = [ HttpRequestHeaders.Accept "application/json" ]
-                        )
-
+                    let! message = Fetch.post ("/api/Translate/", code)
                     setMessage message
                     return ()
                 }
                 |> ignore
         ]
-        
+
         if message = "" then
             Html.none
         else
