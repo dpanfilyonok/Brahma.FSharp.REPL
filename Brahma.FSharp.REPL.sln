@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{239D7C6D-5797-4774-A1CF-67EBA7A74191}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Client", "src\Client\Client.fsproj", "{F8209327-9AD9-494A-A997-0D1CD422C425}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Client.React", "src\Client.React\Client.React.fsproj", "{F8209327-9AD9-494A-A997-0D1CD422C425}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Model", "src\Model\Model.fsproj", "{6FB87AC1-B54E-4ADC-994D-3A5214B6BF36}"
 EndProject

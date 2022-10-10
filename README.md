@@ -32,7 +32,7 @@ With all dependencies installed, you can launch the apps, which will require thr
 
 1. Termainl 1: `npm start`
 1. Terminal 2: `cd api && func start`
-1. Terminal 3: `swa start http://localhost:3000 --api http://localhost:7071`
+1. Terminal 3: `swa start http://localhost:3000 --api-location http://localhost:7071`
 
 Then you can navigate to `http://localhost:4280` to access the emulator.
 

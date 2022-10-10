@@ -2,6 +2,7 @@ namespace Server.AzureFunctions
 
 open System
 open System.IO
+open System.Web.Http
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Azure.WebJobs
 open Microsoft.Azure.WebJobs.Extensions.Http
@@ -13,10 +14,6 @@ open Model
 module Translate =
     let translator = TranslationProvider()
 
-    [<AllowNullLiteral>]
-    type CodeContainer() =
-        member val Code = "" with get, set
-
     [<FunctionName("Translate")>]
     let run
         ([<HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)>] req: HttpRequest)
@@ -27,10 +24,14 @@ module Translate =
 
             use stream = new StreamReader(req.Body)
             let! reqBody = stream.ReadToEndAsync() |> Async.AwaitTask
-            let data = JsonConvert.DeserializeObject<CodeContainer>(reqBody)
+            let data = JsonConvert.DeserializeObject<string>(reqBody)
 
-            let responseMessage = translator.Translate(data.Code)
 
-            return OkObjectResult(responseMessage) :> IActionResult
+            try
+                let responseMessage = translator.Translate(data)
+                return OkObjectResult(responseMessage) :> IActionResult
+            with
+            | e ->
+                return ExceptionResult(e, true) :> IActionResult
         }
         |> Async.StartAsTask
