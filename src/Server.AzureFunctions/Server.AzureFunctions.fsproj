@@ -20,6 +20,6 @@
     <Compile Include="TranslateFunction.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.fsproj" />
+    <ProjectReference Include="..\Server.Logic\Server.Logic.fsproj" />
   </ItemGroup>
 </Project>

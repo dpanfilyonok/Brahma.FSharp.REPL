@@ -1,7 +1,7 @@
 module ModelTests
 
 open Expecto
-open Model
+open Server.Logic
 
 type TestData =
     {

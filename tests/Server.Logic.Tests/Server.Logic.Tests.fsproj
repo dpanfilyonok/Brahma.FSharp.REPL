@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="ModelTests.fs" />
+    <Compile Include="Tests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Model\Model.fsproj" />
+    <ProjectReference Include="..\..\src\Server.Logic\Server.Logic.fsproj" />
   </ItemGroup>
 
 </Project>

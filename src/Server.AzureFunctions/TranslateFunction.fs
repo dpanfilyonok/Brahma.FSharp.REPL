@@ -1,6 +1,5 @@
 namespace Server.AzureFunctions
 
-open System
 open System.IO
 open System.Web.Http
 open Microsoft.AspNetCore.Mvc
@@ -9,7 +8,7 @@ open Microsoft.Azure.WebJobs.Extensions.Http
 open Microsoft.AspNetCore.Http
 open Newtonsoft.Json
 open Microsoft.Extensions.Logging
-open Model
+open Server.Logic
 
 module Translate =
     let translator = TranslationProvider()

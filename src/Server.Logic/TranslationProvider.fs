@@ -1,12 +1,12 @@
-﻿namespace Model
+﻿namespace Server.Logic
 
+open System
 open System.IO
 open FSharp.Compiler.CodeAnalysis
 open Brahma.FSharp.OpenCL.Translator
 open Brahma.FSharp.OpenCL.Printer
 open FSharp.Quotations
 
-// TODO можно подумать над обработкой и тестированием ошибок еще (3 типа)
 type TranslationProvider() =
     let checker = FSharpChecker.Create()
 
@@ -28,13 +28,19 @@ type TranslationProvider() =
 
         File.WriteAllText(fn2, code)
 
+        let getFullPath relativePath =
+            Path.Combine [|
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                relativePath
+            |]
+
         let errors, exitCode, dynAssembly =
             checker.CompileToDynamicAssembly(
                 [|
                     "-o"; fn3
                     "-a"; fn2
-                    "-r"; @"C:\Users\anticnvm\.nuget\packages\brahma.fsharp\2.0.1\lib\net5.0\Brahma.FSharp.OpenCL.Core.dll"
-                    "-r"; @"C:\Users\anticnvm\.nuget\packages\brahma.fsharp.opencl.shared\2.0.1\lib\net5.0\Brahma.FSharp.OpenCL.Shared.dll"
+                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "package"; "brahma.fsharp"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Core.dll" |]
+                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "package"; "brahma.fsharp.opencl.shared"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Shared.dll" |]
                 |],
                 execute = None
             )
@@ -45,7 +51,7 @@ type TranslationProvider() =
             | [| |], 0 -> dynAssembly.Value
             | _ -> failwithf $"\nExitCode: %i{exitCode}\n%A{errors}"
 
-        // тут нуллы возвращаются, а не исключение кидается
+        // TODO throw exception
         let command =
             let type' = assembly.GetType(moduleName)
             let pInfo = type'.GetProperty(kernelVarName)
