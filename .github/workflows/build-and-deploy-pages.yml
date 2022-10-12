@@ -1,0 +1,42 @@
+name: Build and Deploy Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 6.0.100
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install Tools
+        run: dotnet tool restore
+
+      - name: Install Packages
+        run: |
+          dotnet paket install
+          npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./src/Client.React/public
