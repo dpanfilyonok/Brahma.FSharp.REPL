@@ -6,5 +6,6 @@ export default defineConfig({
         outDir: "./public",
         emptyOutDir: true,
         sourcemap: true
-    }
+    },
+    base: ""
 });
