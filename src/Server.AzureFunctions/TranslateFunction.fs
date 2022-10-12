@@ -25,7 +25,6 @@ module Translate =
             let! reqBody = stream.ReadToEndAsync() |> Async.AwaitTask
             let data = JsonConvert.DeserializeObject<string>(reqBody)
 
-
             try
                 let responseMessage = translator.Translate(data)
                 return OkObjectResult(responseMessage) :> IActionResult

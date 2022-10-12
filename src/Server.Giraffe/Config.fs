@@ -11,10 +11,10 @@ open Giraffe
 module Config =
     let configureCors (builder: CorsPolicyBuilder) =
         builder
-            .WithOrigins(
-                "http://localhost:5000",
-                "https://localhost:5001"
-            )
+//            .WithOrigins(
+//                "http://localhost:5000",
+//                "https://localhost:5001"
+//            )
             .AllowAnyMethod()
             .AllowAnyHeader()
         |> ignore

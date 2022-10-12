@@ -6,6 +6,7 @@ open FSharp.Compiler.CodeAnalysis
 open Brahma.FSharp.OpenCL.Translator
 open Brahma.FSharp.OpenCL.Printer
 open FSharp.Quotations
+open System.Runtime.InteropServices
 
 type TranslationProvider() =
     let checker = FSharpChecker.Create()
@@ -39,8 +40,9 @@ type TranslationProvider() =
                 [|
                     "-o"; fn3
                     "-a"; fn2
-                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "package"; "brahma.fsharp"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Core.dll" |]
-                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "package"; "brahma.fsharp.opencl.shared"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Shared.dll" |]
+                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "packages"; "brahma.fsharp"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Core.dll" |]
+                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "packages"; "brahma.fsharp.opencl.shared"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Shared.dll" |]
+//                    "-r"; Path.Combine [| RuntimeEnvironment.GetRuntimeDirectory(); |]
                 |],
                 execute = None
             )
