@@ -15,18 +15,18 @@ let Translator() =
             prop.className "home-container"
             prop.children [
                 Html.div [
-                    prop.className "home-container1"
+                    prop.className "inner-container"
                     prop.children [
                         Html.textarea [
                             prop.id "codeInputTextarea"
-                            prop.placeholder "Type your kernel code here"
                             prop.classes [ "home-textarea"; "textarea" ]
                             prop.defaultValue "module Command\nopen Brahma.FSharp\n\nlet command = "
+                            prop.placeholder "Type your kernel code here"
+                            prop.spellcheck false
                             prop.custom ("data-lt-active", false)
                         ]
                         Html.button [
                             prop.classes [ "home-button"; "button" ]
-
                             prop.text "GO"
                             prop.onClick <| fun _ ->
                                 promise {
@@ -45,7 +45,6 @@ let Translator() =
                                                 RequestProperties.Mode RequestMode.Nocors
                                             ]
                                         )
-
 
                                     setMessage message
                                     return ()
