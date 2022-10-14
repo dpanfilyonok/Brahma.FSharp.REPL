@@ -15,7 +15,7 @@ module Handlers =
         fun (next: HttpFunc) (ctx: HttpContext) ->
             task {
                 use stream = new StreamReader(ctx.Request.Body)
-                let! reqBody = stream.ReadToEndAsync() |> Async.AwaitTask
+                let! reqBody = stream.ReadToEndAsync()
                 let data = JsonConvert.DeserializeObject<string>(reqBody)
 
                 let responseMessage = translator.Translate(data)

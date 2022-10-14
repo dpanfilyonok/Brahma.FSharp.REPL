@@ -1,23 +1,35 @@
-open System
-open System.IO
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Server.Giraffe
+open Giraffe
+open Microsoft.Extensions.Logging
+open Microsoft.Extensions.DependencyInjection
 
-[<EntryPoint>]
-let main args =
-    let contentRoot = Directory.GetCurrentDirectory()
+let builder = WebApplication.CreateBuilder()
 
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(fun webHostBuilder ->
-            webHostBuilder
-                .UseContentRoot(contentRoot)
-                .Configure(Action<IApplicationBuilder> Config.configureApp)
-                .ConfigureServices(Config.configureServices)
-                .ConfigureLogging(Config.configureLogging)
-            |> ignore
-        )
-        .Build()
-        .Run()
-    0
+builder.Services
+    .AddCors()
+    .AddGiraffe()
+|> ignore
+
+builder.Logging
+    .AddConsole()
+    .AddDebug()
+|> ignore
+
+let app = builder.Build()
+
+app
+    .UseGiraffeErrorHandler(Handlers.errorHandler)
+    .UseHttpsRedirection()
+    .UseCors(fun corsBuilder ->
+        corsBuilder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+        |> ignore
+    )
+    .UseStaticFiles()
+    .UseGiraffe(Handlers.webApp)
+
+app.Run()
