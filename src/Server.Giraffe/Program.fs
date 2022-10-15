@@ -33,3 +33,5 @@ app
     .UseGiraffe(Handlers.webApp)
 
 app.Run()
+
+type Program() = class end

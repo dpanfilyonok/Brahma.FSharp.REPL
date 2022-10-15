@@ -7,6 +7,7 @@ open Brahma.FSharp.OpenCL.Translator
 open Brahma.FSharp.OpenCL.Printer
 open FSharp.Quotations
 open System.Runtime.InteropServices
+open Microsoft.FSharp.Core
 
 type TranslationProvider() =
     let checker = FSharpChecker.Create()
@@ -16,6 +17,13 @@ type TranslationProvider() =
     let kernelVarName = "command"
 
     let translator = FSQuotationToOpenCLTranslator.CreateDefault()
+
+    // TODO check exception
+    let isDocker =
+        Environment.GetEnvironmentVariable("IS_DOCKER")
+        |> Option.ofObj
+        |> Option.defaultValue "false"
+        |> Convert.ToBoolean
 
     let openclTranslate (expr: Expr) =
         translator.Translate expr
@@ -29,20 +37,48 @@ type TranslationProvider() =
 
         File.WriteAllText(fn2, code)
 
-        let getFullPath relativePath =
-            Path.Combine [|
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-                relativePath
+        let references =
+            [|
+                if not isDocker then
+                    let getPathFromRoot paths =
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                            Path.Combine(paths)
+                        )
+
+                    "-r"; getPathFromRoot [| ".nuget"; "packages"; "brahma.fsharp"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Core.dll" |]
+                    "-r"; getPathFromRoot [| ".nuget"; "packages"; "brahma.fsharp.opencl.shared"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Shared.dll" |]
+
+                else
+                    let dlls =
+                        RuntimeEnvironment.GetRuntimeDirectory()
+                        |> DirectoryInfo
+                        |> fun di -> di.EnumerateFiles()
+                        |> Seq.map (fun fi -> fi.FullName)
+                        |> Seq.filter (fun names -> names.EndsWith(".dll"))
+                        |> Seq.map (sprintf "-r:%s")
+
+                    let monoPath = @"/usr/lib/mono/4.5/"
+
+                    "-I"; monoPath
+                    "-I"; Path.Combine [| RuntimeEnvironment.GetRuntimeDirectory(); |]
+
+                    "-r"; Path.Combine [| monoPath; "System.Runtime.Remoting.dll" |]
+                    "-r"; Path.Combine [| monoPath; "System.Runtime.Serialization.Formatters.Soap.dll" |]
+                    "-r"; Path.Combine [| monoPath; "System.Web.Services.dll" |]
+                    "-r"; Path.Combine [| monoPath; "System.Windows.Forms.dll" |]
+                    "-r"; @"./Brahma.FSharp.OpenCL.Core.dll"
+                    "-r"; @"./Brahma.FSharp.OpenCL.Shared.dll"
+                    yield! dlls
             |]
 
         let errors, exitCode, dynAssembly =
             checker.CompileToDynamicAssembly(
                 [|
+                    "--noframework"
                     "-o"; fn3
                     "-a"; fn2
-                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "packages"; "brahma.fsharp"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Core.dll" |]
-                    "-r"; getFullPath <| Path.Combine [| ".nuget"; "packages"; "brahma.fsharp.opencl.shared"; "2.0.1"; "lib"; "net5.0"; "Brahma.FSharp.OpenCL.Shared.dll" |]
-//                    "-r"; Path.Combine [| RuntimeEnvironment.GetRuntimeDirectory(); |]
+                    yield! references
                 |],
                 execute = None
             )

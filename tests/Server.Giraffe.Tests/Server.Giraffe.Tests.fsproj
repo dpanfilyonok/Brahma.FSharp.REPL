@@ -13,13 +13,14 @@
 
   <ItemGroup>
     <PackageReference Include="Expecto" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.10" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.13.3" />
     <PackageReference Remove="FSharp.Core" />
     <PackageReference Update="FSharp.Core" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Server.Logic\Server.Logic.fsproj" />
+    <ProjectReference Include="..\..\src\Server.Giraffe\Server.Giraffe.fsproj" />
   </ItemGroup>
 
 </Project>
