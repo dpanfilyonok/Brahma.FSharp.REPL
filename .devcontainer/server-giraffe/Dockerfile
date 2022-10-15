@@ -22,4 +22,4 @@ RUN dotnet publish ./src/Server.Giraffe/Server.Giraffe.fsproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Server.Giraffe.dll"]
+CMD ["dotnet", "Server.Giraffe.dll"]
