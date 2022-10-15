@@ -11,11 +11,12 @@ swa-run:
 
 # Docker
 
+# TODO fix
 docker-rmi:
-	docker rmi $(docker images -f “dangling=true” -q)
+	docker rmi $$(docker images -f “dangling=true” -q)
 
-giraffe:
+server-giraffe:
 	make -f ./.devcontainer/server-giraffe/Makefile $(cmd)
 
-react:
+client-react:
 	make -f ./.devcontainer/client-react/Makefile $(cmd)

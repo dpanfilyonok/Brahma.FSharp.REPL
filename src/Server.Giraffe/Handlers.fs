@@ -4,6 +4,7 @@ open System
 open System.IO
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Logging
+open Microsoft.Extensions.Primitives
 open Newtonsoft.Json
 open Giraffe
 open Server.Logic
@@ -19,7 +20,7 @@ module Handlers =
                 let data = JsonConvert.DeserializeObject<string>(reqBody)
 
                 let responseMessage = translator.Translate(data)
-                return! text responseMessage next ctx
+                return! json responseMessage next ctx
             }
 
     let webApp : HttpFunc -> HttpContext -> HttpFuncResult =

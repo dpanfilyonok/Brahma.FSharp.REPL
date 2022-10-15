@@ -1,5 +1,5 @@
-IMAGE_NAME := server.giraffe
-CONTAINER_NAME := server.giraffe
+IMAGE_NAME := server-giraffe
+CONTAINER_NAME := server-giraffe
 
 docker-build:
 	docker build -t $(IMAGE_NAME) -f ./.devcontainer/server-giraffe/Dockerfile .

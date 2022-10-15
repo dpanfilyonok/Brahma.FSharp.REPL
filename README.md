@@ -25,9 +25,10 @@ With it this **REPL** allows you to translate F# code into OpenCL code _online_.
 - FSharp.Compiler.Service
 
 ### Other
-- **Docker** as development environment
+- **Docker** as deployment environment
+- **Heroku** as backend hosting service
+- **Github Pages** as frontend hosting service
 - **Github Actions** as CI/CD tool
-- **Github Pages** as hosting service
 - [**Expecto**](https://github.com/haf/expecto) as testing framework for business logic
 
 ## Running The Application Locally
