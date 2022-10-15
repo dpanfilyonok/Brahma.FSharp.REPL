@@ -6,9 +6,6 @@ RUN bash mono-install.sh
 
 WORKDIR /app
 ENV IS_DOCKER true
-#ENV ASPNETCORE_URLS=http://+:80  
-EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
