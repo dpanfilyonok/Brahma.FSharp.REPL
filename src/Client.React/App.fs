@@ -35,7 +35,7 @@ let Translator() =
 
                                     let! message =
                                         Fetch.post(
-                                            "api/Translate",
+                                            "https://brahma-fsharp-repl.herokuapp.com/api/Translate",
                                             code,
                                             headers = [
                                                 HttpRequestHeaders.Accept "application/json"
