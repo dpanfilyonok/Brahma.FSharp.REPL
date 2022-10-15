@@ -10,6 +10,16 @@ open Feliz
 let Translator() =
     let message, setMessage = React.useState ""
 
+    let defaultValue = """module Command
+open Brahma.FSharp
+
+let command =
+    <@
+        fun (range: Range1D) (buf: ClArray<int>) ->
+            buf.[0] <- 1
+    @>
+"""
+
     Html.div [
         Html.div [
             prop.className "home-container"
@@ -20,7 +30,8 @@ let Translator() =
                         Html.textarea [
                             prop.id "codeInputTextarea"
                             prop.classes [ "home-textarea"; "textarea" ]
-                            prop.defaultValue "module Command\nopen Brahma.FSharp\n\nlet command = "
+                            prop.defaultValue defaultValue
+
                             prop.placeholder "Type your kernel code here"
                             prop.spellcheck false
                             prop.custom ("data-lt-active", false)
@@ -35,14 +46,11 @@ let Translator() =
 
                                     let! message =
                                         Fetch.post(
-                                            "https://brahma-fsharp-repl.herokuapp.com/api/Translate",
+                                            // TODO if dev
+                                            "https://localhost:5001/api/Translate",
                                             code,
                                             headers = [
                                                 HttpRequestHeaders.Accept "application/json"
-                                                HttpRequestHeaders.Custom ("Access-Control-Allow-Origin", "*")
-                                            ],
-                                            properties = [
-                                                RequestProperties.Mode RequestMode.Nocors
                                             ]
                                         )
 

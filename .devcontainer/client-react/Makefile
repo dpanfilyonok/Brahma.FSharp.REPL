@@ -1,5 +1,5 @@
-IMAGE_NAME := client.react
-CONTAINER_NAME := client.react
+IMAGE_NAME := client-react
+CONTAINER_NAME := client-react
 
 docker-build:
 	docker build -t $(IMAGE_NAME) -f ./.devcontainer/client-react/Dockerfile .

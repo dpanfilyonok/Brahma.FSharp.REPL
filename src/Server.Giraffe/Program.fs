@@ -27,6 +27,7 @@ app
         corsBuilder
             .AllowAnyMethod()
             .AllowAnyHeader()
+            .WithOrigins("https://dpanfilyonok.github.io")
         |> ignore
     )
     .UseStaticFiles()
