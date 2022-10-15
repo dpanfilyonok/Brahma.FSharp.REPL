@@ -5,10 +5,10 @@ docker-build:
 	docker build -t $(IMAGE_NAME) -f ./.devcontainer/server-giraffe/Dockerfile .
 
 docker-run:
-	docker run -d --rm --name $(CONTAINER_NAME) -p 8080:80 $(IMAGE_NAME)
+	docker run -d --rm --name $(CONTAINER_NAME) -e PORT=80 -p 8080:80 $(IMAGE_NAME)
 
 docker-run-dev: 
-	docker run -d --rm --name $(CONTAINER_NAME) -e PORT=5000 -p 80:80 -v ./:/source $(IMAGE_NAME) 
+	docker run -d --rm --name $(CONTAINER_NAME) -e PORT=80 -p 8080:80 -v ./:/source $(IMAGE_NAME) 
 
 docker-stop:
 	docker stop $(CONTAINER_NAME)
