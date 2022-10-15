@@ -1,13 +1,10 @@
 # Dockerfile
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-RUN pwd
-RUN ls
-CMD ["ls"]
 
-#COPY ["./.devcontainer/server-giraffe/mono-install.sh", "."]
-#RUN bash mono-install.sh
-#
+COPY ["mono-install.sh", "."]
+RUN bash mono-install.sh
+
 #WORKDIR /app
 #ENV IS_DOCKER true
 #ENV ASPNETCORE_URLS=http://+:80  
